@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Untuk Fadilla 🤍</title>
+    <title>Dilla Day's - 24 th 🤍</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,11 +229,13 @@
         .cursor { display: inline-block; width: 2px; height: 1.1rem; background: var(--primary); animation: blink 1s infinite; margin-left: 2px; }
 
         /* B. TTS */
-        .tts-board {
-            display: grid;
-            gap: 8px; background: transparent; border: none; box-shadow: none;
-            margin-bottom: 20px; padding: 6px;
-        }
+      .tts-board {
+    display: grid;
+    gap: 5px; /* Jarak antar kotak sedikit dirapatkan */
+    background: transparent; border: none; box-shadow: none;
+    margin-bottom: 20px; padding: 6px;
+    justify-content: center; /* Tambahkan ini agar posisinya selalu pas di tengah */
+}
         .cw-cell {
             background-color: #fff; position: relative; width: 100%; height: 100%;
             border: 3px solid var(--primary); border-radius: 12px;
@@ -374,14 +376,14 @@
         <div id="screen-lock" class="screen">
             <div class="lock-card">
                 <img src="files/img/1.png" alt="Lock">
-                <h2>Untuk Fadilla</h2>
+                <h2>For Fadilla</h2>
                 <!-- Teks pertanyaan yang diperbarui -->
                 <p>Berapa jumlah takaran nasi ini?</p>
                 <div class="input-group">
                     <input type="text" id="pw-input" class="pw-input" placeholder="Masukkan jawaban...">
                     <div id="error-msg" class="error-msg"></div>
                 </div>
-                <button class="btn-elegant" onclick="checkLogin()">Buka Kado</button>
+                <button class="btn-elegant" onclick="checkLogin()">MAsuk</button>
             </div>
         </div>
 
@@ -390,7 +392,7 @@
 
         <!-- SCREEN 3: GIFT BOX & DYAR EXPLOSION -->
         <div id="screen-gift" class="screen">
-            <h2 style="font-size: 2.4rem; margin-bottom: 50px;">Kejutan Untukmu</h2>
+            <h2 style="font-size: 2.4rem; margin-bottom: 50px;">Surprise Babyy</h2>
             
             <div class="gift-stage" id="gift-stage">
                 <img src="files/img/12.png" id="gift-whole" onclick="tapGift()">
@@ -401,14 +403,14 @@
                 </div>
             </div>
             
-            <div class="tap-hint" id="gift-hint">SENTUH KADONYA BERKALI-KALI</div>
+            <div class="tap-hint" id="gift-hint">TAP AKU BERKALI KALII</div>
             <div id="dyar-container"></div>
         </div>
 
         <!-- SCREEN 4: ORBIT 3D -->
         <div id="screen-orbit" class="screen">
             <div class="orbit-title">
-                <h2>Ruang Waktu</h2>
+                <h2>Dilla Day's</h2>
                 <p>Jelajahi setiap memori dan harapan.</p>
             </div>
             
@@ -475,13 +477,13 @@
                 <div class="tts-clues">
                     <h3>Mendatar</h3>
                     <ul>
-                        <li><img src="files/img/7.png" class="clue-img"> 2. Cewek paling cantik yang lagi ulang tahun?</li>
-                        <li><img src="files/img/7.png" class="clue-img"> 3. Pemilik hati Alfa, siapa namanya?</li>
+                        <li><img src="files/img/7.png" class="clue-img"> 2. Alasan Kenapa Surga Bocor ?</li>
+                        <li><img src="files/img/7.png" class="clue-img"> 3. Definisi Cantik ?</li>
                     </ul>
                     <h3 style="margin-top: 15px;">Menurun</h3>
                     <ul>
-                        <li><img src="files/img/7.png" class="clue-img"> 1. Nama yang bikin hari ini spesial?</li>
-                        <li><img src="files/img/7.png" class="clue-img"> 3. Nama panggilan sayang dari Alfa?</li>
+                        <li><img src="files/img/7.png" class="clue-img"> 1. Person who can make all days very special?</li>
+                        <li><img src="files/img/7.png" class="clue-img"> 3. Keajaiban dunia yang ke 8?</li>
                     </ul>
                 </div>
             </div>
@@ -491,10 +493,10 @@
         <div class="modal" id="modal-memori">
             <div class="btn-back" onclick="closeModal('modal-memori')">Kembali</div>
             <div class="modal-body" style="overflow: hidden;">
-                <h2 class="modal-title">Bingkai Kenangan</h2>
+                <h2 class="modal-title">Dilla's Memory</h2>
                 
                 <div class="stack-area" id="polaroid-stack"></div>
-                <div class="stack-hint">Sentuh foto untuk membuang dan melihat selanjutnya</div>
+                <div class="stack-hint">Sentuh foto untuk melihat makhluk paling cantik sejagat raya</div>
             </div>
         </div>
 
@@ -508,21 +510,21 @@
                     <div class="track" onclick="playListTrack(1, this)">
                         <div class="track-left">
                             <div class="record-disc"></div>
-                            <div class="track-info"><h4>Awal Cerita</h4><p>files/audio/1.mp3</p></div>
+                            <div class="track-info"><h4>Kita Lewati Berdua</h4><p>Overnight</p></div>
                         </div>
                         <button class="btn-audio-play"><div class="shape-play"></div><div class="shape-pause"></div></button>
                     </div>
                     <div class="track" onclick="playListTrack(2, this)">
                         <div class="track-left">
                             <div class="record-disc"></div>
-                            <div class="track-info"><h4>Vibes Coquette</h4><p>files/audio/2.mp3</p></div>
+                            <div class="track-info"><h4>Jagat Rasa</h4><p>Samuel Cipta </p></div>
                         </div>
                         <button class="btn-audio-play"><div class="shape-play"></div><div class="shape-pause"></div></button>
                     </div>
                     <div class="track" onclick="playListTrack(3, this)">
                         <div class="track-left">
                             <div class="record-disc"></div>
-                            <div class="track-info"><h4>Doa Masa Depan</h4><p>files/audio/3.mp3</p></div>
+                            <div class="track-info"><h4>Just You</h4><p>Teddy Adhitya</p></div>
                         </div>
                         <button class="btn-audio-play"><div class="shape-play"></div><div class="shape-pause"></div></button>
                     </div>
@@ -544,12 +546,12 @@
         <div class="modal" id="modal-balas">
             <div class="btn-back" onclick="closeModal('modal-balas')">Kembali</div>
             <div class="modal-body">
-                <h2 class="modal-title">Pesan Darimu</h2>
+                <h2 class="modal-title">How's ur Feel Babyy? Or Anything </h2>
                 
                 <div class="reply-box">
                     <p style="text-align: center; color: var(--text-muted); font-weight: 600; margin-bottom: 20px;">Tulis balasanmu untuk Alfa di bawah ini.</p>
                     <textarea id="reply-txt" class="textarea" placeholder="Ketik sesuatu sayang..."></textarea>
-                    <button id="btn-submit" class="btn-elegant">Kirim Pesan Hati</button>
+                    <button id="btn-submit" class="btn-elegant">Kirim</button>
                 </div>
             </div>
         </div>
@@ -879,7 +881,7 @@
            8. SURAT NGETIK
            ========================================================================== */
         let isSuratTyped = false;
-        const suratText = "Selamat bertambah usia, sayang. Terima kasih sudah terus bertahan menjadi sosok yang sabar, lembut, dan menjadi rumah ternyamanku. Perjalanan kita mungkin tidak selalu mulus, tapi selama kita saling menjaga dan percaya, aku yakin masa depan yang kita impikan bisa segera terwujud. Teruslah berjalan di sisiku, hingga kelak kita menua bersama.";
+        const suratText = "Selamat bertambah usia, sayang. Terima kasih baby sudah terus bertahan menjadi sosok yang sabar, lembut, dan menjadi rumah ternyaman i. Perjalanan kita mungkin ngga selalu mulus, tapi selama kita saling menjaga dan percaya, i yakin masa masa yang kita impiin bisa terwujud. Terus sama i  di sisi i, sampai kelak kita menua bersama. Love You, Fadilla Cintaku, sayangku duniaku, heheh maaf kalau gabisa surprise in uu :* 🤍";
         let iChar = 0;
         
         function typeSurat() {
@@ -929,7 +931,7 @@
         }
 
         const gridBox = document.getElementById('crossword-grid');
-        const CELL_PX = 40;
+       const CELL_PX = window.innerWidth <= 420 ? 32 : 40;
         gridBox.style.gridTemplateColumns = `repeat(${TTS_COLS}, ${CELL_PX}px)`;
         gridBox.style.gridTemplateRows = `repeat(${TTS_ROWS}, ${CELL_PX}px)`;
 
@@ -986,7 +988,7 @@
             }
         }
 
-        const ttsSuccessText = "Yeay, semua benar — FADILLA! Selamat ulang tahun, sayangku. 🌸🤍";
+        const ttsSuccessText = "Yeay, semua benar babyyy! Selamat ulang tahun, sayangku. Bikin Video harapan u kedepannya yu sayang hihi 🌸🤍";
         function typeTtsSuccess() {
             const popup = document.getElementById('tts-popup');
             const el = document.getElementById('tts-success-text');
@@ -1017,14 +1019,14 @@
             isGalleryReady = true;
             const container = document.getElementById('polaroid-stack');
             const photos = [
-                { src: 'files/img/p1.png', txt: 'Awal Cerita' },
-                { src: 'files/img/p2.png', txt: 'Senyum Manismu' },
-                { src: 'files/img/p3.png', txt: 'Tawa Bersama' },
-                { src: 'files/img/p4.png', txt: 'Kesayanganku' },
-                { src: 'files/img/p5.png', txt: 'Paling Sabar' },
-                { src: 'files/img/p6.png', txt: 'Impian Kita' },
-                { src: 'files/img/p7.png', txt: 'Terus Melangkah' },
-                { src: 'files/img/p8.png', txt: 'Saling Jaga' },
+                { src: 'files/img/p1.png', txt: 'Cantik' },
+                { src: 'files/img/p2.png', txt: 'Sweety' },
+                { src: 'files/img/p3.png', txt: 'Happy' },
+                { src: 'files/img/p4.png', txt: 'Lovely' },
+                { src: 'files/img/p5.png', txt: 'Dimplee' },
+                { src: 'files/img/p6.png', txt: 'Lika an Angel' },
+                { src: 'files/img/p7.png', txt: 'Semoga' },
+                { src: 'files/img/p8.png', txt: 'Sama sama' },
                 { src: 'files/img/p9.png', txt: 'Selamanya 🤍' }
             ];
 
