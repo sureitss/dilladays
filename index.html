@@ -127,7 +127,7 @@
         .error-msg { font-size: 0.85rem; color: #d32f2f; height: 20px; margin-bottom: 20px; opacity: 0; transition: 0.3s; font-weight: 600; }
 
         /* ==========================================================================
-           5. TRANSISI BUNGA GUGUR — MASUK GUGUR, BERHENTI (PADAT), KELUAR GUGUR
+           5. TRANSISI BUNGA GUGUR
            ========================================================================== */
         #trans-slide {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
@@ -228,8 +228,7 @@
         }
         .cursor { display: inline-block; width: 2px; height: 1.1rem; background: var(--primary); animation: blink 1s infinite; margin-left: 2px; }
 
-        /* B. TTS — kotak bulat tebal warna pink (gaya sketsa hand-drawn), bukan kotak rapat kayak koran.
-           Ukuran & jarak kotak diatur otomatis lewat JS sesuai jumlah kolom/baris. */
+        /* B. TTS */
         .tts-board {
             display: grid;
             gap: 8px; background: transparent; border: none; box-shadow: none;
@@ -376,9 +375,10 @@
             <div class="lock-card">
                 <img src="files/img/1.png" alt="Lock">
                 <h2>Untuk Fadilla</h2>
-                <p>Kunci hatinya dipegang oleh siapa?</p>
+                <!-- Teks pertanyaan yang diperbarui -->
+                <p>Berapa jumlah takaran nasi ini?</p>
                 <div class="input-group">
-                    <input type="text" id="pw-input" class="pw-input" placeholder="Nama calon suamimu?">
+                    <input type="text" id="pw-input" class="pw-input" placeholder="Masukkan jawaban...">
                     <div id="error-msg" class="error-msg"></div>
                 </div>
                 <button class="btn-elegant" onclick="checkLogin()">Buka Kado</button>
@@ -442,7 +442,7 @@
         </div>
 
         <!-- ==================================================
-             FULL SCREEN MODALS  (tombol kembali di tiap modal -> balik ke Orbit hub)
+             FULL SCREEN MODALS
              ================================================== -->
              
         <!-- MODAL 1: SURAT KETIK -->
@@ -456,7 +456,7 @@
             </div>
         </div>
 
-        <!-- MODAL 2: TTS KORAN — 4 soal saling nyambung, semua jawaban FADILLA -->
+        <!-- MODAL 2: TTS KORAN -->
         <div class="modal" id="modal-tts">
             <div class="btn-back" onclick="closeModal('modal-tts')">Kembali</div>
             <div class="modal-body">
@@ -464,7 +464,6 @@
                 
                 <div class="tts-board" id="crossword-grid"></div>
 
-                <!-- Popup ucapan selamat (muncul kalau TTS terjawab benar semua) -->
                 <div class="tts-popup-backdrop" id="tts-popup">
                     <div class="tts-popup-card">
                         <img src="files/img/9.png" alt="Selamat">
@@ -568,10 +567,9 @@
            ========================================================================== */
         let currentScreen = 'screen-load';
         let activeModal = null;
-        let isTransitioning = false; // penahan supaya tombol tidak bisa diklik dobel saat animasi transisi masih berjalan
+        let isTransitioning = false; 
         const btnBack = document.getElementById('btn-back');
 
-        // Dipakai HANYA untuk transisi awal Loading -> Login (tidak perlu bunga)
         function goToScreen(id) {
             document.getElementById(currentScreen).classList.remove('active');
             setTimeout(() => {
@@ -580,8 +578,6 @@
             }, 800);
         }
 
-        // Ganti layar secara instan (dipakai DI DALAM transisi bunga, jadi
-        // pergantiannya kejadian pas layar lagi ketutup penuh oleh bunga)
         function swapScreen(fromId, toId) {
             document.getElementById(fromId).classList.remove('active');
             document.getElementById(toId).classList.add('active');
@@ -598,14 +594,15 @@
         });
 
         /* ==========================================================================
-           3. LOGIN LOGIC
+           3. LOGIN LOGIC (Diubah sesuai request)
            ========================================================================== */
-        let failCount = 0;
         function checkLogin() {
-            const input = document.getElementById('pw-input').value.toLowerCase();
+            // Ambil input dan bersihkan spasi
+            const input = document.getElementById('pw-input').value.trim();
             const errMsg = document.getElementById('error-msg');
             
-            if(input.includes('alfa')) {
+            // Cek apakah jawabannya '3'
+            if(input === '3') {
                 errMsg.style.opacity = '0';
                 
                 const bgm = document.getElementById('bgm');
@@ -615,7 +612,6 @@
                     floatMusic.classList.add('playing');
                 }).catch(e=>console.log(e));
 
-                // MASUK dengan transisi bunga: Login -> Gift
                 document.getElementById('pw-input').disabled = true;
                 playFallingTransition(() => {
                     swapScreen('screen-lock', 'screen-gift');
@@ -625,26 +621,22 @@
                 }, { grand: true });
 
             } else {
-                failCount++;
                 const inp = document.getElementById('pw-input');
                 inp.style.borderColor = 'red';
                 errMsg.style.opacity = '1';
                 
-                if(failCount >= 2) {
-                    errMsg.innerText = "Cium org dpn mu utk tau jawabannya 😘";
-                } else {
-                    errMsg.innerText = "Salah sayang, coba ingat lagi.";
-                }
+                // Pesan Error Baru
+                errMsg.innerText = "Kalau salah cium orang dpn kamu 3 kali 😘";
 
                 setTimeout(() => { inp.style.borderColor = 'var(--primary-light)'; }, 1000);
             }
         }
 
         /* ==========================================================================
-           4. TOMBOL KEMBALI ORBIT -> LOGIN (pakai transisi bunga juga)
+           4. TOMBOL KEMBALI ORBIT -> LOGIN 
            ========================================================================== */
         function goBack() {
-            if (isTransitioning) return; // abaikan klik kalau lagi transisi
+            if (isTransitioning) return;
             if (currentScreen === 'screen-orbit') {
                 btnBack.style.display = 'none';
                 playFallingTransition(() => {
@@ -654,23 +646,7 @@
         }
 
         /* ==========================================================================
-           5. TRANSISI BUNGA GUGUR (SWEEP DARI SAMPING)
-              Fase 1 (masuk)  : bunga menyapu masuk dari SATU SISI layar (kiri atau
-                                 kanan, dipilih acak tiap transisi), dibantu overlay
-                                 warna lembut yang menebal bareng supaya layar benar²
-                                 ketutup penuh (tidak ada celah walau kelopaknya jarang).
-              Fase 2 (berhenti): bunga + overlay menumpuk padat menutupi layar, nyaris
-                                 diam sebentar — di titik inilah layar/konten diganti.
-              Fase 3 (keluar) : bunga terus menyapu ke arah yang sama, keluar layar.
-
-              Catatan performa: dulu animasinya menggerakkan `top`/`left` (memicu
-              reflow/layout tiap frame -> berat & patah-patah kalau bunganya banyak).
-              Sekarang posisi dasar tiap kelopak (top/left) FIXED lewat CSS, dan yang
-              dianimasikan cuma `transform` (translate + rotate) & `opacity` — dua
-              properti ini digambar langsung oleh GPU tanpa reflow, jadi jauh lebih
-              smooth walau jumlah kelopaknya banyak.
-
-              opts.grand = transisi lebih besar & lebih lama (Login->Gift / Gift->Orbit)
+           5. TRANSISI BUNGA GUGUR 
            ========================================================================== */
         function playFallingTransition(switchScreenCallback, opts = {}) {
             isTransitioning = true;
@@ -685,12 +661,10 @@
             const SIZE_MIN = isGrand ? 60 : 50;
             const SIZE_MAX = isGrand ? 190 : 160;
             const DURATION = isGrand ? 3600 : 2900;
-            const DELAY_SPREAD = isGrand ? 420 : 300;          // makin kecil = kelopak nongol makin bareng = makin padat
-            const HOLD_START = 0.32;                           // mulai "berhenti" & menutupi layar penuh
-            const HOLD_END = 0.64;                              // akhir fase berhenti, mulai menyapu keluar
+            const DELAY_SPREAD = isGrand ? 420 : 300;          
+            const HOLD_START = 0.32;                           
+            const HOLD_END = 0.64;                              
 
-            // Overlay warna lembut sebagai "jaring pengaman" supaya transisi selalu
-            // terasa 100% penuh menutup layar, walau posisi kelopak acak.
             const overlay = document.createElement('div');
             overlay.id = 'trans-overlay';
             trans.appendChild(overlay);
@@ -707,11 +681,8 @@
                 easing: 'ease-in-out'
             });
 
-            // Satu sisi masuk yang KONSISTEN untuk seluruh transisi ini, dipilih acak
-            // sekali saja: 'left' = menyapu masuk dari kiri lalu terus ke kanan,
-            // 'right' = sebaliknya.
             const enterSide = Math.random() < 0.5 ? 'left' : 'right';
-            const OFFSCREEN_VW = 130; // seberapa jauh di luar layar titik awal/akhirnya (dalam vw, jadi selalu di luar layar apapun ukurannya)
+            const OFFSCREEN_VW = 130; 
             const enterX = enterSide === 'left' ? -OFFSCREEN_VW : OFFSCREEN_VW;
             const exitX = enterSide === 'left' ? OFFSCREEN_VW : -OFFSCREEN_VW;
 
@@ -723,16 +694,14 @@
                 let size = Math.random() * (SIZE_MAX - SIZE_MIN) + SIZE_MIN;
                 let delay = Math.random() * DELAY_SPREAD;
 
-                // Posisi dasar FIXED (tidak dianimasikan) — tersebar penuh ke seluruh
-                // lebar & tinggi layar, sedikit melewati tepi supaya benar² penuh.
-                let baseTop = -8 + Math.random() * 118;   // -8% s/d 110%
-                let baseLeft = -8 + Math.random() * 118;  // -8% s/d 110%
+                let baseTop = -8 + Math.random() * 118;   
+                let baseLeft = -8 + Math.random() * 118;  
                 img.style.width = size + 'px';
                 img.style.top = baseTop + '%';
                 img.style.left = baseLeft + '%';
                 img.style.zIndex = 2;
 
-                let driftY = (Math.random() * 10 - 3);     // sedikit gerak naik/turun biar tetap terasa "gugur", bukan geser lurus kaku
+                let driftY = (Math.random() * 10 - 3);     
                 let rot1 = Math.random() * 200;
                 let rot2 = rot1 + 90 + Math.random() * 180;
 
@@ -740,7 +709,6 @@
                     { transform: `translate(${enterX}vw, ${-driftY}vh) rotate(0deg) scale(0.85)`, opacity: 0, offset: 0 },
                     { transform: `translate(${enterX * 0.35}vw, 0vh) rotate(${rot1 * 0.4}deg) scale(1)`, opacity: 1, offset: HOLD_START * 0.7 },
                     { transform: `translate(0vw, 0vh) rotate(${rot1}deg) scale(1)`, opacity: 1, offset: HOLD_START },
-                    // fase "berhenti" — posisi nyaris sama supaya betul-betul diam & menumpuk padat
                     { transform: `translate(0vw, ${driftY * 0.3}vh) rotate(${rot1 + 6}deg) scale(1)`, opacity: 1, offset: HOLD_END },
                     { transform: `translate(${exitX}vw, ${driftY}vh) rotate(${rot2}deg) scale(0.9)`, opacity: 0, offset: 1 }
                 ], {
@@ -753,14 +721,13 @@
                 trans.appendChild(img);
             }
 
-            // Ganti layar tepat di tengah fase "berhenti" (layar sudah ketutup penuh bunga+overlay)
             const switchAt = (DELAY_SPREAD * 0.4) + DURATION * ((HOLD_START + HOLD_END) / 2);
             const cleanupAt = DELAY_SPREAD + DURATION + 300;
 
             setTimeout(() => { switchScreenCallback(); }, switchAt);
             setTimeout(() => {
                 trans.style.display = 'none';
-                isTransitioning = false; // transisi selesai total, tombol boleh diklik lagi
+                isTransitioning = false; 
             }, cleanupAt);
         }
 
@@ -769,7 +736,7 @@
            ========================================================================== */
         let tCount = 0;
         function tapGift() {
-            if (isTransitioning || tCount >= 5) return; // abaikan tap susulan setelah kado meledak
+            if (isTransitioning || tCount >= 5) return; 
             tCount++;
             const gift = document.getElementById('gift-whole');
             
@@ -786,7 +753,6 @@
                 
                 explodeDyar();
                 
-                // MASUK dengan transisi bunga: Gift -> Orbit
                 setTimeout(() => {
                     playFallingTransition(() => {
                         swapScreen('screen-gift', 'screen-orbit');
@@ -874,16 +840,12 @@
 
         setInterval(() => { if(!isDrag && currentScreen === 'screen-orbit') { rY += 0.2; render3D(); } }, 16);
 
-        // Tap item orbit -> buka modal, MASUK dengan transisi bunga
-        orbitItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (isTransitioning) return;
-                openModal(item.dataset.target);
-            });
-        });
-
         function openModal(id) {
-            if (isTransitioning) return; // abaikan klik kalau lagi transisi
+            if (isTransitioning) return;
+            
+            // FIX BUG: Sembunyikan tombol kembali global agar tidak bertumpuk
+            btnBack.style.display = 'none'; 
+            
             playFallingTransition(() => {
                 activeModal = id;
                 document.getElementById(id).classList.add('open');
@@ -894,18 +856,24 @@
             });
         }
 
-        // Tombol kembali di dalam modal -> tutup modal, KEMBALI ke Orbit hub (bukan login),
-        // dengan transisi bunga juga.
         function closeModal(id) {
-            if (isTransitioning) return; // abaikan klik kalau lagi transisi (ini akar bug tombol kembali dobel-klik)
+            if (isTransitioning) return; 
             playFallingTransition(() => {
                 document.getElementById(id).classList.remove('open');
                 if (activeModal === id) activeModal = null;
-                // Orbit tetap 'active' di belakang modal, jadi cukup pastikan tampil & currentScreen benar
                 currentScreen = 'screen-orbit';
-                btnBack.style.display = 'flex';
+                
+                // FIX BUG: Tampilkan kembali tombol kembali global setelah modal tertutup
+                btnBack.style.display = 'flex'; 
             });
         }
+
+        orbitItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (isTransitioning) return;
+                openModal(item.dataset.target);
+            });
+        });
 
         /* ==========================================================================
            8. SURAT NGETIK
@@ -924,18 +892,8 @@
         }
 
         /* ==========================================================================
-           9. TTS KORAN — 4 SOAL, SEMUA JAWABAN "FADILLA", TAPI SEKARANG SALING
-              NYAMBUNG JADI SATU RANGKAIAN (bukan 2 bentuk plus yang terpisah lagi):
-
-              1 Menurun (down)  --nyambung ke-->  2 Mendatar (across) lewat huruf I
-              2 Mendatar        --nyambung ke-->  3 Mendatar/Menurun  lewat huruf L (L terakhir)
-              3 Mendatar        --nyambung ke-->  3 Menurun           lewat huruf F
-                (soal 3 mendatar & 3 menurun sama-sama mulai dari satu sel yang sama,
-                 jadi nomornya jadi satu: "3")
-
-              Hasilnya membentuk tangga/zig-zag menyambung dari atas ke bawah.
+           9. TTS KORAN
            ========================================================================== */
-        // '.' = sel terkunci, huruf = jawaban benar.
         const ttsAnswerGrid = [
             ['.', '.', '.', '.', 'F', '.', '.', '.'],
             ['.', '.', '.', '.', 'A', '.', '.', '.'],
@@ -971,8 +929,6 @@
         }
 
         const gridBox = document.getElementById('crossword-grid');
-        // Ukuran kotak dihitung otomatis sesuai jumlah kolom/baris -> tidak akan
-        // pernah lagi mismatch dengan data gridnya (sumber bug sebelumnya).
         const CELL_PX = 40;
         gridBox.style.gridTemplateColumns = `repeat(${TTS_COLS}, ${CELL_PX}px)`;
         gridBox.style.gridTemplateRows = `repeat(${TTS_ROWS}, ${CELL_PX}px)`;
@@ -1004,6 +960,7 @@
                     inp.addEventListener('focus', () => box.classList.add('cw-focused'));
                     inp.addEventListener('blur', () => box.classList.remove('cw-focused'));
                     box.appendChild(inp);
+                    allCwInputs.push(inp);
                 }
                 gridBox.appendChild(box);
             }
@@ -1018,7 +975,6 @@
                 if (inp.value === '') allFilled = false;
                 if (inp.value !== inp.dataset.answer) allCorrect = false;
             });
-            // Baru dianggap selesai kalau SEMUA kotak terisi DAN semuanya benar (FADILLA)
             if (allFilled && allCorrect) {
                 crosswordSolved = true;
                 allCwInputs.forEach(inp => {
@@ -1030,7 +986,6 @@
             }
         }
 
-        // Ucapan selamat muncul sebagai POPUP bergambar, teksnya diketik huruf demi huruf
         const ttsSuccessText = "Yeay, semua benar — FADILLA! Selamat ulang tahun, sayangku. 🌸🤍";
         function typeTtsSuccess() {
             const popup = document.getElementById('tts-popup');
